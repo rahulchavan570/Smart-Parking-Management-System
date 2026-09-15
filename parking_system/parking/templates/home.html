@@ -1,0 +1,241 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Smart Parking Management System with AI-powered predictions and real-time monitoring">
+    <meta name="keywords" content="parking, smart parking, AI, vehicle management">
+    <title>Smart Parking System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container-fluid bg-gradient position-relative">
+        <!-- Background Image Overlay -->
+        <div class="hero-bg position-absolute top-0 start-0 w-100 h-100" style="background-image: url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'); background-size: cover; background-position: center; opacity: 0.1; z-index: 1;"></div>
+
+        <div class="container py-5 position-relative" style="z-index: 2;">
+            <div class="row justify-content-center">
+                <div class="col-12 text-center mb-5">
+                    <div class="hero-content p-5 rounded-4 bg-white bg-opacity-10 backdrop-blur-sm">
+                        <h1 class="display-4 text-white mb-4"><i class="fas fa-parking text-primary"></i> Smart Parking System</h1>
+                        <p class="lead text-white mb-4">Intelligent parking management with AI-powered predictions and real-time monitoring</p>
+                        <div class="row justify-content-center">
+                            <div class="col-md-8">
+                                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                                    <span class="badge bg-primary fs-6 px-3 py-2"><i class="fas fa-brain"></i> AI Predictions</span>
+                                    <span class="badge bg-success fs-6 px-3 py-2"><i class="fas fa-clock"></i> Real-time Updates</span>
+                                    <span class="badge bg-info fs-6 px-3 py-2"><i class="fas fa-shield-alt"></i> Secure & Reliable</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLOTS -->
+            <div class="row justify-content-center mb-5">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-lg border-0 h-100">
+                        <div class="card-header bg-primary text-white text-center">
+                            <h5 class="card-title mb-0"><i class="fas fa-car-side me-2"></i> Parking Slots</h5>
+                            <small class="text-white-50">Current availability status</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-2">
+                                {% for slot in slots %}
+                                    <div class="col-6">
+                                        <div class="slot-item d-flex justify-content-between align-items-center p-3 border rounded">
+                                            <div>
+                                                <span class="fw-bold d-block">Slot {{ slot.slot_number }}</span>
+                                                <small class="text-muted">{{ slot.status }}</small>
+                                            </div>
+                                            <span class="badge fs-6 {% if slot.status == 'Available' %}bg-success{% else %}bg-danger{% endif %}">
+                                                <i class="fas {% if slot.status == 'Available' %}fa-check-circle{% else %}fa-times-circle{% endif %}"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-center g-4">
+                <!-- PARK VEHICLE -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-lg border-0 h-100">
+                        <div class="card-header bg-success text-white text-center">
+                            <h5 class="card-title mb-0"><i class="fas fa-plus-circle me-2"></i> Park Vehicle</h5>
+                            <small class="text-white-50">Enter your vehicle details</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="text-center mb-4">
+                                <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                                    <i class="fas fa-car text-success" style="font-size: 2rem;"></i>
+                                </div>
+                            </div>
+                            <form method="POST" action="/park/">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="vehicle_number" class="form-label fw-semibold"><i class="fas fa-id-card me-2"></i> Vehicle Number</label>
+                                    <input type="text" class="form-control form-control-lg" id="vehicle_number" name="vehicle_number" placeholder="e.g., ABC-1234" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="owner_name" class="form-label fw-semibold"><i class="fas fa-user me-2"></i> Owner Name</label>
+                                    <input type="text" class="form-control form-control-lg" id="owner_name" name="owner_name" placeholder="Enter full name" required>
+                                </div>
+                                <button type="submit" class="btn btn-success btn-lg w-100">
+                                    <i class="fas fa-parking me-2"></i> Park Vehicle
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EXIT VEHICLE -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-lg border-0 h-100">
+                        <div class="card-header bg-warning text-dark text-center">
+                            <h5 class="card-title mb-0"><i class="fas fa-sign-out-alt me-2"></i> Exit Vehicle</h5>
+                            <small class="text-dark-50">Retrieve your parked vehicle</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="text-center mb-4">
+                                <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                                    <i class="fas fa-door-open text-warning" style="font-size: 2rem;"></i>
+                                </div>
+                            </div>
+                            <form method="POST" action="/exit/">
+                                {% csrf_token %}
+                                <div class="mb-4">
+                                    <label for="exit_vehicle_number" class="form-label fw-semibold"><i class="fas fa-id-card me-2"></i> Vehicle Number</label>
+                                    <input type="text" class="form-control form-control-lg" id="exit_vehicle_number" name="vehicle_number" placeholder="e.g., ABC-1234" required>
+                                </div>
+                                <button type="submit" class="btn btn-warning btn-lg w-100">
+                                    <i class="fas fa-door-open me-2"></i> Exit Vehicle
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PREDICTION -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-lg border-0 h-100">
+                        <div class="card-header bg-info text-white text-center">
+                            <h5 class="card-title mb-0"><i class="fas fa-chart-line me-2"></i> Parking Prediction</h5>
+                            <small class="text-white-50">AI-powered availability forecast</small>
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="mb-4">
+                                <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                                    <i class="fas fa-brain text-info" style="font-size: 2rem;"></i>
+                                </div>
+                            </div>
+                            <p class="mb-4 text-muted">Get intelligent predictions for parking availability using our advanced AI algorithms</p>
+                            <a href="/predict/" class="btn btn-info btn-lg w-100">
+                                <i class="fas fa-chart-bar me-2"></i> Check Prediction
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Function to update slots
+        function updateSlots() {
+            fetch('/get_slots/', {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.querySelector('#slots-card .card-body').innerHTML = data.slots_html;
+            });
+        }
+
+        // Park vehicle form
+        document.querySelector('form[action="/park/"]').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            fetch('/park/', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Show toast notification
+                showToast(data.message, data.success ? 'success' : 'danger');
+                if (data.success) {
+                    this.reset();
+                    updateSlots();
+                }
+            });
+        });
+
+        // Exit vehicle form
+        document.querySelector('form[action="/exit/"]').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            fetch('/exit/', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                showToast(data.message, data.success ? 'success' : 'danger');
+                if (data.success) {
+                    this.reset();
+                    updateSlots();
+                }
+            });
+        });
+
+        // Toast notification function
+        function showToast(message, type) {
+            const toastContainer = document.getElementById('toast-container') || createToastContainer();
+            const toast = document.createElement('div');
+            toast.className = `toast align-items-center text-white bg-${type} border-0`;
+            toast.setAttribute('role', 'alert');
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">${message}</div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            `;
+            toastContainer.appendChild(toast);
+            const bsToast = new bootstrap.Toast(toast);
+            bsToast.show();
+            toast.addEventListener('hidden.bs.toast', () => toast.remove());
+        }
+
+        function createToastContainer() {
+            const container = document.createElement('div');
+            container.id = 'toast-container';
+            container.className = 'toast-container position-fixed top-0 end-0 p-3';
+            container.style.zIndex = '11';
+            document.body.appendChild(container);
+            return container;
+        }
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI Parking Prediction - Smart Parking System">
+    <title>AI Parking Prediction</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container-fluid bg-gradient position-relative min-vh-100">
+        <!-- Background Image Overlay -->
+        <div class="hero-bg position-absolute top-0 start-0 w-100 h-100" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'); background-size: cover; background-position: center; opacity: 0.1; z-index: 1;"></div>
+
+        <div class="container py-5 position-relative" style="z-index: 2;">
+            <div class="row justify-content-center">
+                <div class="col-12 text-center mb-5">
+                    <div class="hero-content p-5 rounded-4 bg-white bg-opacity-10 backdrop-blur-sm">
+                        <h1 class="display-4 text-white mb-4"><i class="fas fa-brain text-info"></i> AI Parking Prediction</h1>
+                        <p class="lead text-white mb-4">Intelligent parking availability forecasting powered by machine learning</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <div class="card shadow-lg border-0 h-100">
+                        <div class="card-header bg-info text-white text-center">
+                            <h5 class="card-title mb-0"><i class="fas fa-chart-line me-2"></i> Prediction Results</h5>
+                            <small class="text-white-50">Real-time parking availability analysis</small>
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="mb-4">
+                                <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 120px; height: 120px;">
+                                    <i class="fas fa-brain text-info" style="font-size: 3rem;"></i>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h4 class="text-muted mb-3">Current Analysis Time</h4>
+                                <div class="bg-light rounded-pill p-3 d-inline-block">
+                                    <i class="fas fa-clock text-primary me-2"></i>
+                                    <span class="fw-bold fs-5">{{ current_time }}</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h4 class="text-muted mb-3">Parking Status Prediction</h4>
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <div class="status-indicator p-4 rounded-circle {% if status == 'AVAILABLE' %}bg-success{% else %}bg-danger{% endif %} text-white d-flex flex-column align-items-center justify-content-center" style="width: 150px; height: 150px;">
+                                        <i class="fas {% if status == 'AVAILABLE' %}fa-check-circle{% else %}fa-times-circle{% endif %} fa-3x mb-2"></i>
+                                        <span class="fw-bold fs-4">{{ status }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <div class="row g-3">
+                                    <div class="col-6">
+                                        <div class="bg-light rounded-3 p-3">
+                                            <i class="fas fa-car text-success fa-2x mb-2"></i>
+                                            <h6 class="mb-1">Available Slots</h6>
+                                            <span class="fw-bold text-success fs-4">{{ available_slots|default:0 }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="bg-light rounded-3 p-3">
+                                            <i class="fas fa-parking text-danger fa-2x mb-2"></i>
+                                            <h6 class="mb-1">Occupied Slots</h6>
+                                            <span class="fw-bold text-danger fs-4">{{ occupied_slots|default:0 }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <div class="progress" style="height: 20px;">
+                                    <div class="progress-bar {% if status == 'AVAILABLE' %}bg-success{% else %}bg-danger{% endif %}"
+                                         role="progressbar"
+                                         style="width: {{ occupancy_percentage|default:50 }}%"
+                                         aria-valuenow="{{ occupancy_percentage|default:50 }}"
+                                         aria-valuemin="0"
+                                         aria-valuemax="100">
+                                        {{ occupancy_percentage|default:50 }}% Occupied
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <a href="/" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+                                </a>
+                                <button onclick="window.location.reload()" class="btn btn-outline-info">
+                                    <i class="fas fa-sync-alt me-2"></i> Refresh Prediction
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

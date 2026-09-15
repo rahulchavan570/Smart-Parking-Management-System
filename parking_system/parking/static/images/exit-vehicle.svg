@@ -1,0 +1,17 @@
+<svg width="400" height="260" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="exitGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffc107" />
+      <stop offset="100%" stop-color="#fd7e14" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="260" rx="24" ry="24" fill="#f8f9fa" />
+  <rect x="24" y="120" width="352" height="88" rx="16" fill="url(#exitGrad)" opacity="0.95" />
+  <rect x="60" y="76" width="276" height="84" rx="16" fill="#fff" />
+  <circle cx="120" cy="178" r="18" fill="#fff" />
+  <circle cx="280" cy="178" r="18" fill="#fff" />
+  <path d="M140 100 L200 100 L200 132 L260 132" fill="none" stroke="#212529" stroke-width="16" stroke-linecap="round" />
+  <path d="M250 115 L220 92" fill="none" stroke="#212529" stroke-width="16" stroke-linecap="round" />
+  <path d="M250 115 L220 138" fill="none" stroke="#212529" stroke-width="16" stroke-linecap="round" />
+  <text x="200" y="38" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="32" fill="#212529" font-weight="700">Exit Vehicle</text>
+</svg>
